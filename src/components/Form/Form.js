@@ -161,7 +161,15 @@ const Form = () => {
           </button>
         </div>
         <p className="text-2xl">Education Details</p>
-        <div></div>
+        <div>
+          <label htmlFor="city">City</label>
+          <br />
+          <input
+            type="text"
+            id="city"
+            className="w-64 rounded p-1 border border-black my-2"
+          />
+        </div>
       </form>
     </div>
   );
