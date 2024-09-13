@@ -10,8 +10,8 @@ const Work = ({work, handleChange, index}) => {
           type="text"
           id="job"
           name="job"
-          value={work.job}
-          onChange={(e) => handleChange(e, index)}
+          value={work?.job || ""}
+          onChange={(event) => handleChange(event, index)}
           className="w-64 rounded p-1 border border-black my-2"
         />
       </div>
@@ -22,7 +22,7 @@ const Work = ({work, handleChange, index}) => {
           type="text"
           id="company"
           name="company"
-          value={work.company}
+          value={work?.company || ""}
           onChange={(e) => handleChange(e, index)}
           className="w-64 rounded p-1 border border-black my-2"
         />
@@ -34,7 +34,7 @@ const Work = ({work, handleChange, index}) => {
           type="text"
           id="loc"
           name="loc"
-          value={work.loc}
+          value={work?.loc || ""}
           onChange={(e) => handleChange(e, index)}
           className="w-64 rounded p-1 border border-black my-2"
         />
@@ -46,7 +46,7 @@ const Work = ({work, handleChange, index}) => {
           type="date"
           id="start"
           name="workStart"
-          value={work.workStart}
+          value={work?.workStart || ""}
           onChange={(e) => handleChange(e, index)}
           className="w-64 rounded p-1 border border-black my-2"
         />
@@ -58,7 +58,7 @@ const Work = ({work, handleChange, index}) => {
           type="date"
           id="end"
           name="workEnd"
-          value={work.workEnd}
+          value={work?.workEnd || ""}
           onChange={(e) => handleChange(e, index)}
           className="w-64 rounded p-1 border border-black my-2"
         />

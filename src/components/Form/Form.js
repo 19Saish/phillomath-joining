@@ -45,42 +45,50 @@ const Form = () => {
     });
   };
 
-  const handleChange = (e, index) => {
+  const handleWork = (e, index) => {
     const { name, value } = e.target;
-    const updatedWork = [...work];
-    updatedWork[index][name] = value;
-    setWork(updatedWork);
+    // const updatedWork = [...work];
+    // const updatedWork = work.map((entry, i) =>
+    //   i === index ? { ...entry, [name]: value } : entry
+    // );
+    setWork((prevWork) =>
+      prevWork.map((entry, i) =>
+        i === index ? { ...entry, [name]: value } : entry
+      )
+    );
   };
 
   const handleEducation = (e, index) => {
     const { name, value } = e.target;
-    const updatedEducation = [...education];
-    updatedEducation[index][name] = value;
-    setEducation(updatedEducation);
+    setEducation((prevWork) =>
+      prevWork.map((entry, i) =>
+        i === index ? { ...entry, [name]: value } : entry
+      )
+    );
   };
 
   const addWork = () => {
-    setWork([
-      ...work,
+    setWork((prevWork) => [
+      ...prevWork,
       { job: "", company: "", loc: "", workStart: "", workEnd: "" },
     ]);
   };
 
   const removeWork = (index) => {
-    const updatedWork = work.filter((_, i) => i !== index);
-    setWork(updatedWork);
+    // const updatedWork = work.filter((_, i) => i !== index);
+    // setWork(updatedWork);
+    setWork((prevWork) => prevWork.filter((_, i) => i !== index));
   };
 
   const addEdu = () => {
-    setEducation([
-      ...education,
+    setEducation((prevWork) => [
+      ...prevWork,
       { degree: "", special: "", university: "", eduStart: "", eduEnd: "" },
     ]);
   };
 
   const removeEdu = (index) => {
-    const updatedEducation = education.filter((_, i) => i !== index);
-    setEducation(updatedEducation);
+    setEducation((prevWork) => prevWork.filter((_, i) => i !== index));
   };
 
   const convertToCSV = (data, work, education) => {
@@ -93,9 +101,21 @@ const Form = () => {
     const maxRows = Math.max(work.length, education.length);
 
     for (let i = 0; i < maxRows; i++) {
-      const workeach = work[i]
-      const educationeach = education[i]
-
+      const workeach = work[i] || {
+        job: "",
+        company: "",
+        loc: "",
+        workStart: "",
+        workEnd: "",
+      };
+      const educationeach = education[i] || {
+        degree: "",
+        special: "",
+        university: "",
+        grade: "",
+        eduStart: "",
+        eduEnd: "",
+      };
 
       csvRows.push(
         `${data.firstName}, ${data.middleName}, ${data.lastName}, ${data.birthDate}, ${data.email}, ${data.mobile}, ${data.aadhar}, ${data.pan}, ${data.address}, ${data.city}, ${data.state}, ${data.country}, ${data.gender}, ${data.martial}, ${workeach.job}, ${workeach.company}, ${workeach.loc}, ${workeach.workStart}, ${workeach.workEnd}, ${educationeach.degree}, ${educationeach.special}, ${educationeach.university}, ${educationeach.grade}, ${educationeach.eduStart}, ${educationeach.eduEnd}`
@@ -120,7 +140,8 @@ const Form = () => {
   const submitHandler = (e) => {
     e.preventDefault();
     const csvData = convertToCSV(data, work, education);
-    downloadCSV(csvData)
+    // downloadCSV(csvData);
+
     // console.log(work[0].job);
   };
 
@@ -345,7 +366,11 @@ const Form = () => {
         <div className="w-64 flex flex-col items-end">
           {work.map((w, index) => (
             <div key={index} className="flex flex-col items-end">
-              <Work work={w} handleChange={handleChange} index={index} />
+              <Work
+                work={w}
+                handleChange={(e) => handleWork(e, index)}
+                index={index}
+              />
               {work.length > 1 && (
                 <button
                   type="button"
@@ -371,7 +396,7 @@ const Form = () => {
             <div key={index} className="flex flex-col items-end">
               <Education
                 education={e}
-                handleEducation={handleEducation}
+                handleEducation={(e) => handleEducation(e, index)}
                 index={index}
               />
               {education.length > 1 && (
