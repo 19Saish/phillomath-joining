@@ -4,7 +4,6 @@ const BasicInfo = ({ data, handleData, isValidPanNo }) => {
 
   const currDate = new Date().toISOString().slice(0,10)
 
-  console.log("From basic",isValidPanNo);
   
   
   return (
@@ -19,7 +18,7 @@ const BasicInfo = ({ data, handleData, isValidPanNo }) => {
           name="firstName"
           onChange={handleData}
           className="w-72 rounded p-1 border border-black my-2"
-          required
+          // required
         />
       </div>
       <div>
@@ -44,7 +43,7 @@ const BasicInfo = ({ data, handleData, isValidPanNo }) => {
           name="lastName"
           onChange={handleData}
           className="w-72 rounded p-1 border border-black my-2"
-          required
+          // required
         />
       </div>
       <div>
@@ -58,7 +57,7 @@ const BasicInfo = ({ data, handleData, isValidPanNo }) => {
           max={currDate}
           onChange={handleData}
           className="w-72 rounded p-1 border border-black my-2"
-          required
+          // required
         />
       </div>
       <div>
@@ -71,7 +70,7 @@ const BasicInfo = ({ data, handleData, isValidPanNo }) => {
           name="email"
           onChange={handleData}
           className="w-72 rounded p-1 border border-black my-2"
-          required
+          // required
         />
       </div>
       <div>
@@ -83,9 +82,9 @@ const BasicInfo = ({ data, handleData, isValidPanNo }) => {
           value={data.mobile}
           name="mobile"
           onChange={handleData}
-          minLength={10}
+          minLength="10"
           className="w-72 rounded p-1 border border-black my-2"
-          required
+          // required
         />
       </div>
       <div>
@@ -99,7 +98,7 @@ const BasicInfo = ({ data, handleData, isValidPanNo }) => {
           onChange={handleData}
           maxLength={12}
           className="w-72 rounded p-1 border border-black my-2"
-          required
+          // required
         />
       </div>
       <div>
@@ -111,8 +110,9 @@ const BasicInfo = ({ data, handleData, isValidPanNo }) => {
           value={data.pan}
           name="pan"
           onChange={handleData}
-          className={`w-72 rounded p-1 border border-black my-2 ${!isValidPanNo ? "border border-red-500 bg-red-100" : ""}`}
-          required
+          maxLength='10'
+          className={`w-72 rounded p-1 border border-black my-2 ${!isValidPanNo ? "border border-red-700 bg-red-300" : ""}`}
+          // required
         />
       </div>
     </div>

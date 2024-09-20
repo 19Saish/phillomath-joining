@@ -13,7 +13,7 @@ export const downloadCSV = (csvData, data) => {
 export const convertToCSV = (data, work, education) => {
   const csvRows = [];
 
- const address = data.address1.replace(/,/g, '') + " " + data.address2.replace(/,/g, '')
+ const address = data?.address1?.replace(/,/g, '') + " " + data?.address2?.replace(/,/g, '')
   console.log(address);
   
 

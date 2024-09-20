@@ -1,9 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Work from "../Work/Work";
 import Education from "../Education/Education";
 import BasicInfo from "../BasicInfo/BasicInfo";
 import { convertToCSV, downloadCSV, isValidPan } from "../../commonFunctions";
 import PersonalInfo from "../PersonalInfo/PersonalInfo";
+
+import { Bounce, toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Form = () => {
   const [work, setWork] = useState([
@@ -41,43 +44,51 @@ const Form = () => {
     },
   ]);
 
-  const [isValidPanNo, setIsValidPanNo] = useState(false);
+  const [isValidPanNo, setIsValidPanNo] = useState(true);
 
   const handleData = (e) => {
     const { name, value } = e.target;
-    setData({
-      ...data,
-      [name]: value,
-    });
+    if (data) {
+      setData({
+        ...data,
+        [name]: value,
+      });
+    }
   };
 
   const handleWork = (e, index) => {
     const { name, value } = e.target;
-    setWork((prevWork) =>
-      prevWork.map((entry, i) =>
-        i === index ? { ...entry, [name]: value } : entry
-      )
-    );
+    if (work) {
+      setWork((prevWork) =>
+        prevWork?.map((entry, i) =>
+          i === index ? { ...entry, [name]: value } : entry
+        )
+      );
+    }
   };
 
   const handleEducation = (e, index) => {
     const { name, value } = e.target;
-    setEducation((prevWork) =>
-      prevWork.map((entry, i) =>
-        i === index ? { ...entry, [name]: value } : entry
-      )
-    );
+    if (education) {
+      setEducation((prevWork) =>
+        prevWork?.map((entry, i) =>
+          i === index ? { ...entry, [name]: value } : entry
+        )
+      );
+    }
   };
 
   const addWork = () => {
-    setWork((prevWork) => [
-      ...prevWork,
-      { job: "", company: "", loc: "", workStart: "", workEnd: "" },
-    ]);
+    if (work) {
+      setWork((prevWork) => [
+        ...prevWork,
+        { job: "", company: "", loc: "", workStart: "", workEnd: "" },
+      ]);
+    }
   };
 
   const removeWork = (index) => {
-    setWork((prevWork) => prevWork.filter((_, i) => i !== index));
+    setWork((prevWork) => prevWork?.filter((_, i) => i !== index));
   };
 
   const addEdu = () => {
@@ -88,19 +99,23 @@ const Form = () => {
   };
 
   const removeEdu = (index) => {
-    setEducation((prevWork) => prevWork.filter((_, i) => i !== index));
+    setEducation((prevWork) => prevWork?.filter((_, i) => i !== index));
   };
 
   const submitHandler = (e) => {
     e.preventDefault();
-    if (isValidPan(data.pan) && data !== null && education !== null) {
+    console.log(e);
+
+    if (isValidPan(data.pan)) {
       const csvData = convertToCSV(data, work, education);
       // downloadCSV(csvData, data);
 
       console.log(data, education);
       setIsValidPanNo(true);
+      toast.success("Form Submitted Successfully !!!");
     } else {
-      console.log("Form is Invalid !!!");
+      setIsValidPanNo(false);
+      toast.error("Invalid Form !!!");
     }
   };
 
@@ -110,9 +125,27 @@ const Form = () => {
         onSubmit={submitHandler}
         className="flex flex-col gap-4 items-center"
       >
+        <ToastContainer
+          position="top-right"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+          transition={Bounce}
+        />
+        <ToastContainer />
         <p className="text-2xl my-8 text-white">Basic Information</p>
         <div className="p-14 border border-black rounded bg-lightblue drop-shadow-md">
-          <BasicInfo data={data} handleData={handleData} isValidPanNo={isValidPanNo}></BasicInfo>
+          <BasicInfo
+            data={data}
+            handleData={handleData}
+            isValidPanNo={isValidPanNo}
+          ></BasicInfo>
         </div>
         <p className="text-2xl my-8 text-white">Personal Information</p>
         <div className="p-14 border border-black rounded drop-shadow-md bg-lightblue">

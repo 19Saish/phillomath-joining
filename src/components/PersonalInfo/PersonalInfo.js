@@ -13,7 +13,7 @@ const PersonalInfo = ({data, handleData}) => {
             name="address1"
             onChange={handleData}
             className="w-72 rounded p-1 border border-black my-2"
-            required
+            // required
           />
         </div>
         <div>
@@ -26,7 +26,7 @@ const PersonalInfo = ({data, handleData}) => {
             name="address2"
             onChange={handleData}
             className="w-72 rounded p-1 border border-black my-2"
-            required
+            // required
           />
         </div>
         <div>
@@ -39,7 +39,7 @@ const PersonalInfo = ({data, handleData}) => {
             name="city"
             onChange={handleData}
             className="w-72 rounded p-1 border border-black my-2"
-            required
+            // required
           />
         </div>
         <div>
@@ -51,7 +51,7 @@ const PersonalInfo = ({data, handleData}) => {
             value={data.state}
             onChange={handleData}
             className="w-72 rounded p-1 border border-black my-2"
-            required
+            // required
           >
             <option value="">Select your State</option>
             <option value="Maharashtra">Maharashtra</option>
@@ -66,7 +66,7 @@ const PersonalInfo = ({data, handleData}) => {
             value={data.country}
             onChange={handleData}
             className="w-72 rounded p-1 border border-black my-2"
-            required
+            // required
           >
             <option value="">Select your Country</option>
             <option value="India">India</option>
@@ -86,7 +86,7 @@ const PersonalInfo = ({data, handleData}) => {
                 name="gender"
                 id="male"
                 className="mx-2"
-                required
+                // required
               />
             </div>
             <div className="flex justify-center">
@@ -99,7 +99,7 @@ const PersonalInfo = ({data, handleData}) => {
                 name="gender"
                 id="female"
                 className="mx-2"
-                required
+                // required
               />
             </div>
           </div>

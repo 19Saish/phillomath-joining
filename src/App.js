@@ -1,3 +1,4 @@
+import { ToastContainer } from "react-toastify";
 import "./App.css";
 import Form from "./components/Form/Form";
 
@@ -18,6 +19,7 @@ function App() {
         /> */}
       </div>
       <div className="bg-primary">
+        
         <Form></Form>
       </div>
     </div>

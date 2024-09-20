@@ -24,12 +24,12 @@ const Education = ({ education, handleEducation, index }) => {
           value={education.degree}
           onChange={(e) => handleEducation(e, index)}
           className="w-72 rounded p-1 border border-black my-2"
-          required
+          // required
         >
           <option value="">Select Degree</option>
           {
             data.map((degree, i) => (
-              <option value={degree.degree}>{degree.degree}</option>
+              <option key={i} value={degree.degree}>{degree.degree}</option>
             ))
           }
         </select>
