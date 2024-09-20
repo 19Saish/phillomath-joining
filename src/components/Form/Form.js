@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import Work from "../Work/Work";
 import Education from "../Education/Education";
 import BasicInfo from "../BasicInfo/BasicInfo";
-import { convertToCSV, downloadCSV } from "../../CSVFunctions";
+import { convertToCSV, downloadCSV, isValidPan } from "../../commonFunctions";
+import PersonalInfo from "../PersonalInfo/PersonalInfo";
 
 const Form = () => {
   const [work, setWork] = useState([
@@ -19,7 +20,8 @@ const Form = () => {
       mobile: "",
       aadhar: "",
       pan: "",
-      address: "",
+      address1: "",
+      address2: "",
       city: "",
       state: "",
       country: "",
@@ -39,6 +41,8 @@ const Form = () => {
     },
   ]);
 
+  const [isValidPanNo, setIsValidPanNo] = useState(false);
+
   const handleData = (e) => {
     const { name, value } = e.target;
     setData({
@@ -49,10 +53,6 @@ const Form = () => {
 
   const handleWork = (e, index) => {
     const { name, value } = e.target;
-    // const updatedWork = [...work];
-    // const updatedWork = work.map((entry, i) =>
-    //   i === index ? { ...entry, [name]: value } : entry
-    // );
     setWork((prevWork) =>
       prevWork.map((entry, i) =>
         i === index ? { ...entry, [name]: value } : entry
@@ -77,8 +77,6 @@ const Form = () => {
   };
 
   const removeWork = (index) => {
-    // const updatedWork = work.filter((_, i) => i !== index);
-    // setWork(updatedWork);
     setWork((prevWork) => prevWork.filter((_, i) => i !== index));
   };
 
@@ -95,10 +93,15 @@ const Form = () => {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    const csvData = convertToCSV(data, work, education);
-    downloadCSV(csvData, data);
+    if (isValidPan(data.pan) && data !== null && education !== null) {
+      const csvData = convertToCSV(data, work, education);
+      // downloadCSV(csvData, data);
 
-    // console.log(data);
+      console.log(data, education);
+      setIsValidPanNo(true);
+    } else {
+      console.log("Form is Invalid !!!");
+    }
   };
 
   return (
@@ -107,42 +110,23 @@ const Form = () => {
         onSubmit={submitHandler}
         className="flex flex-col gap-4 items-center"
       >
-        <p className="text-2xl">Basic Information</p>
-        <div>
-          <BasicInfo data={data} handleData={handleData}></BasicInfo>
+        <p className="text-2xl my-8 text-white">Basic Information</p>
+        <div className="p-14 border border-black rounded bg-lightblue drop-shadow-md">
+          <BasicInfo data={data} handleData={handleData} isValidPanNo={isValidPanNo}></BasicInfo>
         </div>
-        <p className="text-2xl">Work Experience</p>
-        <div className="w-64 flex flex-col items-end">
-          {work.map((w, index) => (
-            <div key={index} className="flex flex-col items-end">
-              <Work
-                work={w}
-                handleChange={(e) => handleWork(e, index)}
-                index={index}
-              />
-              {work.length > 1 && (
-                <button
-                  type="button"
-                  className="my-2 w-24 border border-black rounded p-1"
-                  onClick={() => removeWork(index)}
-                >
-                  Remove
-                </button>
-              )}
-            </div>
-          ))}
-          <button
-            type="button"
-            onClick={addWork}
-            className="bg-gray-500 hover:bg-opacity-50 w-24 my-3 p-1 rounded"
-          >
-            Add
-          </button>
+        <p className="text-2xl my-8 text-white">Personal Information</p>
+        <div className="p-14 border border-black rounded drop-shadow-md bg-lightblue">
+          <PersonalInfo data={data} handleData={handleData}></PersonalInfo>
         </div>
-        <p className="text-2xl">Education Details</p>
-        <div className="w-64 flex flex-col items-end">
+        <p className="text-2xl my-8 text-white">Education Details</p>
+        <div className="w-64 flex flex-col items-center">
           {education.map((e, index) => (
-            <div key={index} className="flex flex-col items-end">
+            <div
+              key={index}
+              className={`flex flex-col items-end p-14 bg-lightblue border border-black rounded drop-shadow-md ${
+                index !== 0 ? "mt-8" : ""
+              }`}
+            >
               <Education
                 education={e}
                 handleEducation={(e) => handleEducation(e, index)}
@@ -151,7 +135,7 @@ const Form = () => {
               {education.length > 1 && (
                 <button
                   type="button"
-                  className="my-2 w-24 border border-black rounded p-1"
+                  className="mt-4 w-24 border border-black rounded p-1"
                   onClick={() => removeEdu(index)}
                 >
                   Remove
@@ -162,13 +146,47 @@ const Form = () => {
           <button
             type="button"
             onClick={addEdu}
-            className="bg-gray-500 hover:bg-opacity-50 w-24 my-3 p-1 rounded"
+            className="bg-gold hover:bg-opacity-50 w-24 mt-10 p-2 font-semibold rounded"
+          >
+            Add
+          </button>
+        </div>
+
+        <p className="text-2xl my-8 text-white">Work Experience</p>
+        <div className="w-64 flex flex-col items-center">
+          {work.map((w, index) => (
+            <div
+              key={index}
+              className={`flex flex-col items-end p-14 bg-lightblue border border-black rounded drop-shadow-md ${
+                index !== 0 ? "mt-8" : ""
+              }`}
+            >
+              <Work
+                work={w}
+                handleChange={(e) => handleWork(e, index)}
+                index={index}
+              />
+              {work.length > 1 && (
+                <button
+                  type="button"
+                  className="mt-4 w-24 border border-black rounded p-1"
+                  onClick={() => removeWork(index)}
+                >
+                  Remove
+                </button>
+              )}
+            </div>
+          ))}
+          <button
+            type="button"
+            onClick={addWork}
+            className="bg-gold hover:bg-opacity-50 w-24 mt-10 p-2 font-semibold rounded"
           >
             Add
           </button>
         </div>
         <div>
-          <button className="bg-gray-700 hover:bg-opacity-50 w-28 my-3 p-2 rounded text-white">
+          <button className="bg-lightgold font-semibold hover:bg-opacity-50 w-64 my-8 p-2 rounded drop-shadow-md">
             Submit
           </button>
         </div>
